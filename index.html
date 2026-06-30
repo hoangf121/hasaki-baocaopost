@@ -10,10 +10,11 @@
 <meta name="description" content="Báo cáo chi tiết: tỉ lệ đơn giao trễ, đơn vị vận chuyển, Top 10 cửa hàng, đơn treo xử lý và nguyên nhân — kỳ tháng 6/2026.">
 <style>
   :root{
-    --bg:#f5f8f6; --panel:#fff; --ink:#11221b; --muted:#5c6e65;
-    --line:#e3ebe6; --line2:#d2ddd7;
-    --accent:#0f7a4d; --accent-soft:#e6f3ec; --accent-deep:#0a5435;
-    --crit:#d23f3f; --crit-soft:#fbe9e9; --warn:#df8a1e; --warn-soft:#fcf2e2; --good:#2faa6a;
+    --bg:#f4f9f4; --panel:#fff; --ink:#10231a; --muted:#5a6f62;
+    --line:#e1efe4; --line2:#cfe2d4;
+    --accent:#12a83f; --accent-soft:#e4f6e8; --accent-deep:#0a7a2c;
+    --brand:#12a83f; --brand-dark:#0c7e2f; --brand-dot:#ff7a00;
+    --crit:#d23f3f; --crit-soft:#fbe9e9; --warn:#df8a1e; --warn-soft:#fcf2e2; --good:#27a35a;
     --ghn:#2f6fd2; --shopee:#e8772a; --ghtk:#d23f3f; --hnow:#7a4fd2;
     --radius:14px;
     --font:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -23,11 +24,22 @@
   .wrap{max-width:1100px;margin:0 auto;padding:0 22px 90px;}
 
   /* nav */
-  nav{position:sticky;top:0;z-index:20;background:rgba(245,248,246,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -22px 0;padding:11px 22px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-  nav .brand{font-weight:800;font-size:13.5px;margin-right:auto;letter-spacing:-.01em;}
-  nav .brand i{color:var(--accent);font-style:normal;}
+  nav{position:sticky;top:0;z-index:20;background:rgba(244,249,244,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -22px 0;padding:10px 22px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  nav .brand{margin-right:auto;}
   nav a{font-size:12.5px;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:8px;font-weight:600;}
   nav a:hover{background:var(--accent-soft);color:var(--accent-deep);}
+
+  /* Hasaki logo */
+  .logo{display:inline-flex;align-items:center;gap:9px;text-decoration:none;}
+  .logo .mark{flex:none;display:block;filter:drop-shadow(0 1px 2px rgba(18,168,63,.25));}
+  .logo .word{font-weight:800;letter-spacing:-.02em;color:var(--brand);line-height:1;}
+  .logo .word .dot{color:var(--brand-dot);}
+  .logo .word .vn{color:var(--muted);font-weight:700;}
+  nav .logo .word{font-size:18px;}
+  nav .logo .tag{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em;border-left:1px solid var(--line2);padding-left:9px;margin-left:3px;}
+  header .logo{margin-bottom:18px;}
+  header .logo .word{font-size:30px;}
+  header .logo .mark{width:42px;height:42px;}
 
   header.top{padding:42px 0 30px;border-bottom:1px solid var(--line);margin-bottom:8px;}
   .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;}
@@ -138,7 +150,13 @@
 
 <div class="wrap">
   <nav>
-    <div class="brand"><i>●</i> Hasaki · Báo cáo POST 6/2026</div>
+    <div class="brand">
+      <span class="logo">
+        <svg class="mark" width="26" height="26" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="10" fill="var(--brand)"/><path d="M18 7.5C24 12 25 19 21.5 26.5 16.5 23 13.5 17 14 9.5c2.4 2.2 4.6 5.4 5.6 9.2" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="word">hasaki<span class="dot">.</span></span>
+        <span class="tag">BÁO CÁO POST · 6/2026</span>
+      </span>
+    </div>
     <a href="#overview">Tổng quan</a>
     <a href="#carriers">Vận chuyển</a>
     <a href="#shops">Top cửa hàng</a>
@@ -147,6 +165,10 @@
   </nav>
 
   <header class="top">
+    <span class="logo">
+      <svg class="mark" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="var(--brand)"/><path d="M18 7.5C24 12 25 19 21.5 26.5 16.5 23 13.5 17 14 9.5c2.4 2.2 4.6 5.4 5.6 9.2" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="word">hasaki<span class="dot">.</span><span class="vn">vn</span></span>
+    </span>
     <div class="eyebrow">OMS Hasaki · Phân tích vận hành giao hàng</div>
     <h1>Báo cáo chi tiết đơn hàng — Tháng 6/2026</h1>
     <p class="sub">Phân tích 167.733 shipment trên hai trục: <b>tỉ lệ giao trễ</b> (theo đơn vị vận chuyển & cửa hàng) và <b>đơn bị treo trong khâu xử lý</b> cùng nguyên nhân.</p>
