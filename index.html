@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo vận hành giao hàng — OMS Hasaki 6/2026</title>
+</head>
+<body>
+<title>Báo cáo vận hành giao hàng — OMS Hasaki 6/2026</title>
+<meta name="description" content="Báo cáo chi tiết: tỉ lệ đơn giao trễ, đơn vị vận chuyển, Top 10 cửa hàng, đơn treo xử lý và nguyên nhân — kỳ tháng 6/2026.">
+<style>
+  :root{
+    --bg:#f5f8f6; --panel:#fff; --ink:#11221b; --muted:#5c6e65;
+    --line:#e3ebe6; --line2:#d2ddd7;
+    --accent:#0f7a4d; --accent-soft:#e6f3ec; --accent-deep:#0a5435;
+    --crit:#d23f3f; --crit-soft:#fbe9e9; --warn:#df8a1e; --warn-soft:#fcf2e2; --good:#2faa6a;
+    --ghn:#2f6fd2; --shopee:#e8772a; --ghtk:#d23f3f; --hnow:#7a4fd2;
+    --radius:14px;
+    --font:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px 90px;}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;background:rgba(245,248,246,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -22px 0;padding:11px 22px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  nav .brand{font-weight:800;font-size:13.5px;margin-right:auto;letter-spacing:-.01em;}
+  nav .brand i{color:var(--accent);font-style:normal;}
+  nav a{font-size:12.5px;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:8px;font-weight:600;}
+  nav a:hover{background:var(--accent-soft);color:var(--accent-deep);}
+
+  header.top{padding:42px 0 30px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(28px,4.6vw,42px);line-height:1.08;margin:14px 0 10px;font-weight:800;letter-spacing:-.02em;text-wrap:balance;}
+  .sub{color:var(--muted);max-width:64ch;margin:0;font-size:15.5px;}
+  .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:9px;font-size:12.5px;color:var(--muted);}
+  .meta span{background:var(--panel);border:1px solid var(--line);padding:5px 11px;border-radius:999px;}
+
+  section{margin-top:50px;scroll-margin-top:56px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+  .sec-head h2{font-size:21px;font-weight:800;margin:0;letter-spacing:-.015em;}
+  .sec-head .k{font-size:11.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:999px;letter-spacing:.04em;}
+  .sec-head .k.kc{color:var(--crit);background:var(--crit-soft);}
+  .lead{color:var(--muted);max-width:74ch;margin:6px 0 22px;}
+  .lead b{color:var(--ink);}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px 16px 15px;position:relative;overflow:hidden;}
+  .kpi .label{font-size:11.5px;color:var(--muted);font-weight:600;}
+  .kpi .val{font-size:27px;font-weight:800;letter-spacing:-.02em;margin-top:6px;line-height:1;}
+  .kpi .val.crit{color:var(--crit);} .kpi .val.warn{color:var(--warn);} .kpi .val.acc{color:var(--accent);}
+  .kpi .note{font-size:11.5px;color:var(--muted);margin-top:7px;}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+  .kpi.k-crit::before{background:var(--crit);} .kpi.k-warn::before{background:var(--warn);}
+
+  .carriers{display:flex;flex-direction:column;gap:13px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+  .crow{display:grid;grid-template-columns:168px 1fr 124px;align-items:center;gap:16px;}
+  .crow .cname{font-weight:700;font-size:14px;}
+  .crow .cname small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;}
+  .track{height:26px;background:#eef3f0;border-radius:7px;overflow:hidden;}
+  .fill{height:100%;border-radius:7px 0 0 7px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:12px;font-weight:700;min-width:36px;}
+  .crow .cstat{text-align:right;font-size:13px;color:var(--muted);}
+  .crow .cstat b{color:var(--ink);font-size:15px;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);margin-top:14px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+
+  .shops{display:flex;flex-direction:column;gap:16px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 22px;display:grid;gap:18px;}
+  .card-head{display:flex;align-items:flex-start;gap:15px;}
+  .rank{flex:none;width:40px;height:40px;border-radius:11px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;}
+  .card.sev-crit .rank{background:var(--crit);} .card.sev-warn .rank{background:var(--warn);}
+  .card-head .name{flex:1;min-width:0;}
+  .card-head .name h3{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.01em;}
+  .card-head .name .line{color:var(--muted);font-size:12.5px;margin-top:3px;}
+  .pill{flex:none;text-align:right;}
+  .pill .big{font-size:25px;font-weight:800;line-height:1;}
+  .pill .big.crit{color:var(--crit);} .pill .big.warn{color:var(--warn);} .pill .big.ok{color:var(--good);}
+  .pill .cap{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-top:4px;}
+  .card-body{display:grid;grid-template-columns:1.35fr 1fr;gap:24px;}
+  @media(max-width:720px){.card-body{grid-template-columns:1fr;}}
+  .block-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 12px;}
+  .cbar{display:grid;grid-template-columns:64px 1fr 92px;align-items:center;gap:10px;margin-bottom:9px;font-size:12.5px;}
+  .cbar .cn{font-weight:600;}
+  .ctrack{height:18px;background:#eef3f0;border-radius:5px;overflow:hidden;}
+  .cf{height:100%;border-radius:5px;}
+  .cbar .cv{text-align:right;color:var(--muted);}
+  .cbar .cv b{color:var(--ink);}
+  .lag{display:flex;gap:8px;align-items:flex-end;height:92px;padding-top:6px;}
+  .lag .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%;}
+  .lag .bar .b{width:100%;background:linear-gradient(180deg,#f0a23a,#df8a1e);border-radius:5px 5px 0 0;min-height:3px;}
+  .lag .bar .b.d1{background:linear-gradient(180deg,#5fc08a,#2faa6a);}
+  .lag .bar .bn{font-size:13px;font-weight:700;}
+  .lag .bar .bl{font-size:10.5px;color:var(--muted);}
+  .insight{grid-column:1/-1;background:var(--accent-soft);border-radius:10px;padding:11px 14px;font-size:13px;color:#0c4d31;display:flex;gap:9px;}
+  .insight.crit{background:var(--crit-soft);color:#8f2525;}
+  .insight .ic{font-weight:800;}
+
+  /* two-col panels */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr;}.kpis{grid-template-columns:repeat(2,1fr);}.crow{grid-template-columns:110px 1fr;}.crow .cstat{grid-column:2;text-align:left;}nav .brand{width:100%;margin-bottom:4px;}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;}
+  td.r,th.r{text-align:right;}
+  td b{font-weight:700;}
+  .tag-st{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px;background:#eef3f0;color:var(--ink);}
+  .agebars{display:flex;flex-direction:column;gap:10px;}
+  .agerow{display:grid;grid-template-columns:90px 1fr 96px;align-items:center;gap:12px;font-size:13px;}
+  .agetrack{height:20px;background:#eef3f0;border-radius:6px;overflow:hidden;}
+  .agefill{height:100%;border-radius:6px;}
+  .cause{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .cause:last-child{border-bottom:0;}
+  .cause .cnum{flex:none;width:46px;font-size:22px;font-weight:800;text-align:right;}
+  .cause .cdesc{flex:1;font-size:13.5px;}
+  .cause .cdesc .st{font-weight:700;}
+  .cause .cdesc small{color:var(--muted);}
+  .bigcause{border-left:4px solid var(--crit);background:var(--crit-soft);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:14px;}
+  .bigcause .h{font-weight:800;color:#8f2525;margin-bottom:4px;}
+  .bigcause p{margin:0;font-size:13px;color:#7a3030;}
+
+  .recs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:720px){.recs{grid-template-columns:1fr;}}
+  .rec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;border-top:3px solid var(--accent);}
+  .rec.r-crit{border-top-color:var(--crit);}
+  .rec.r-warn{border-top-color:var(--warn);}
+  .rec h4{margin:0 0 8px;font-size:14.5px;}
+  .rec p{margin:0;color:var(--muted);font-size:13px;}
+  .rec .tag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);letter-spacing:.04em;margin-bottom:9px;}
+  .rec.r-crit .tag{color:var(--crit);} .rec.r-warn .tag{color:var(--warn);}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;}
+  .files{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;align-items:center;}
+  .files code{background:var(--panel);border:1px solid var(--line);padding:4px 9px;border-radius:7px;font-size:12px;color:var(--ink);}
+  .note-method{background:#fff;border:1px dashed var(--line2);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--muted);margin-top:22px;}
+</style>
+
+<div class="wrap">
+  <nav>
+    <div class="brand"><i>●</i> Hasaki · Báo cáo POST 6/2026</div>
+    <a href="#overview">Tổng quan</a>
+    <a href="#carriers">Vận chuyển</a>
+    <a href="#shops">Top cửa hàng</a>
+    <a href="#stuck">Đơn treo</a>
+    <a href="#recs">Khuyến nghị</a>
+  </nav>
+
+  <header class="top">
+    <div class="eyebrow">OMS Hasaki · Phân tích vận hành giao hàng</div>
+    <h1>Báo cáo chi tiết đơn hàng — Tháng 6/2026</h1>
+    <p class="sub">Phân tích 167.733 shipment trên hai trục: <b>tỉ lệ giao trễ</b> (theo đơn vị vận chuyển & cửa hàng) và <b>đơn bị treo trong khâu xử lý</b> cùng nguyên nhân.</p>
+    <div class="meta">
+      <span>Nguồn: <b>post 30.6.xlsx</b></span>
+      <span>Dữ liệu: 01–29/06/2026</span>
+      <span>Chốt số: 30/06/2026</span>
+      <span>167.733 shipment</span>
+    </div>
+  </header>
+
+  <!-- TỔNG QUAN -->
+  <section id="overview">
+    <div class="sec-head"><h2>Tổng quan</h2><span class="k">Toàn hệ thống</span></div>
+    <div class="kpis">
+      <div class="kpi k-crit"><div class="label">Tỉ lệ giao trễ</div><div class="val crit" id="k-late">—</div><div class="note" id="k-late-n"></div></div>
+      <div class="kpi k-warn"><div class="label">Tỉ lệ hủy đơn</div><div class="val warn" id="k-cancel">—</div><div class="note" id="k-cancel-n"></div></div>
+      <div class="kpi"><div class="label">GMV đơn trễ</div><div class="val" id="k-gmv">—</div><div class="note">doanh số bị ảnh hưởng</div></div>
+      <div class="kpi"><div class="label">Đơn đang treo</div><div class="val acc" id="k-stuck">—</div><div class="note" id="k-stuck-n"></div></div>
+      <div class="kpi"><div class="label">Tổng shipment</div><div class="val" id="k-total">—</div><div class="note">trong kỳ</div></div>
+    </div>
+  </section>
+
+  <!-- VẬN CHUYỂN -->
+  <section id="carriers">
+    <div class="sec-head"><h2>Tỉ lệ trễ theo Đơn vị vận chuyển</h2><span class="k kc">Nguyên nhân trễ #1</span></div>
+    <p class="lead">Đơn vị vận chuyển là yếu tố tác động lớn nhất tới trễ giao. <b>Giao Hàng Tiết Kiệm</b> giao trễ tới <b>65,9%</b> — gần gấp 2,5 lần Shopee Express — dù chỉ chiếm ~24% sản lượng.</p>
+    <div class="carriers" id="carrierBars"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--crit)"></i>≥ 60% — nghiêm trọng</span>
+      <span><i class="dot" style="background:var(--warn)"></i>35–60% — cảnh báo</span>
+      <span><i class="dot" style="background:var(--good)"></i>&lt; 35% — chấp nhận được</span>
+    </div>
+  </section>
+
+  <!-- TOP SHOP -->
+  <section id="shops">
+    <div class="sec-head"><h2>Top 10 cửa hàng nhiều đơn trễ nhất</h2><span class="k">Chi tiết</span></div>
+    <p class="lead">Xếp theo <b>số lượng đơn trễ</b>. Mỗi cửa hàng có một “thủ phạm” vận chuyển khác nhau — cần xử lý riêng từng điểm.</p>
+    <div class="shops" id="shopCards"></div>
+  </section>
+
+  <!-- ĐƠN TREO -->
+  <section id="stuck">
+    <div class="sec-head"><h2>Đơn treo trong khâu xử lý</h2><span class="k">pending · processing · packed · packing · picking</span></div>
+    <p class="lead">Có <b id="st-total">—</b> shipment chưa hoàn tất. Phần lớn là luồng bình thường (≤3 ngày); <b id="st-long">—</b> đơn treo lâu (≥8 ngày) là nhóm cần xử lý gấp.</p>
+
+    <div class="grid2">
+      <div class="panel">
+        <p class="block-t">Theo trạng thái &amp; tuổi treo</p>
+        <table id="statusTable"><thead><tr><th>Trạng thái</th><th class="r">SL</th><th class="r">Tuổi TB</th><th class="r">Trung vị</th><th class="r">Max</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div class="panel">
+        <p class="block-t">Phân bố tuổi treo (ngày)</p>
+        <div class="agebars" id="ageBars"></div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="panel">
+        <p class="block-t">Nguyên nhân treo lâu (≥8 ngày)</p>
+        <div class="bigcause">
+          <div class="h">▶ Nguyên nhân chính: đơn chờ duyệt hủy bị kẹt</div>
+          <p>45/71 đơn treo lâu (63%) ở trạng thái <b>processing / “Chờ hủy đơn”</b> — đã yêu cầu hủy nhưng lệnh hủy chưa được duyệt dứt điểm nên kẹt lại nhiều tuần.</p>
+        </div>
+        <div id="causeList"></div>
+      </div>
+      <div class="panel">
+        <p class="block-t">Cửa hàng có nhiều đơn treo nhất</p>
+        <table id="stuckShopTable"><thead><tr><th>#</th><th>Cửa hàng</th><th class="r">Treo</th><th class="r">≥8 ngày</th></tr></thead><tbody></tbody></table>
+        <p style="font-size:12px;color:var(--muted);margin:12px 0 0">Số đơn treo chia đều giữa 3 ĐVVC → treo là vấn đề <b>khâu xử lý nội bộ tại shop/kho</b>, không phải do vận chuyển.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KHUYẾN NGHỊ -->
+  <section id="recs">
+    <div class="sec-head"><h2>Khuyến nghị hành động</h2></div>
+    <div class="recs">
+      <div class="rec r-crit"><span class="tag">VẬN CHUYỂN</span><h4>Soát lại GHTK</h4><p>GHTK trễ 66%. Làm việc lại SLA hoặc giảm phân bổ đơn cho GHTK tại các shop GHTK trễ &gt;80% (D6-5A 94%, 170 QL1A 81%, 34 DT 746 84%).</p></div>
+      <div class="rec r-crit"><span class="tag">XỬ LÝ HỦY</span><h4>Khơi thông hàng đợi duyệt hủy</h4><p>63% đơn treo lâu là “Chờ hủy đơn”. Lập quy trình duyệt/hủy tự động trong 24h để đơn không kẹt ở <code>processing</code> hàng tuần.</p></div>
+      <div class="rec r-warn"><span class="tag">CỬA HÀNG</span><h4>Ưu tiên hub 170 QL1A</h4><p>SHOP-170 Quốc Lộ 1A áp đảo cả 3 bảng: 6.678 đơn trễ, 128 đơn treo, 11.994 đơn hủy. Cần đội rà soát riêng cho khâu đóng &amp; bàn giao.</p></div>
+      <div class="rec r-warn"><span class="tag">SLA</span><h4>Xem lại giờ cam kết</h4><p>57% đơn trễ chỉ trễ đúng 1 ngày — dấu hiệu cam kết quá sát hoặc lỡ cut-off bàn giao. Nới mốc dự kiến hoặc đẩy sớm giờ bàn giao.</p></div>
+    </div>
+    <div class="note-method"><b>Phương pháp.</b> “Trễ giao” = ngày khách nhận &gt; ngày giao dự kiến (so theo lịch), tính trên 119.101 đơn đã giao có đủ dữ liệu. “Đơn treo” = shipment ở 5 trạng thái chưa hoàn tất, tuổi treo tính từ ngày tạo đến mốc chốt 30/06/2026. Cột “Lý do trễ” gốc phản ánh đơn treo/chờ hủy (≈99% là đơn đã hủy), được tách khỏi chỉ số trễ giao.</div>
+  </section>
+
+  <footer>
+    <div>Báo cáo tạo tự động từ dữ liệu OMS Hasaki · oms.inshasaki.com · kỳ tháng 6/2026.</div>
+    <div class="files">File dữ liệu chi tiết: <code>don_tre_GHTK.csv</code> <code>ty_le_tre_theo_cua_hang.csv</code> <code>don_treo_xu_ly.csv</code></div>
+  </footer>
+</div>
+
+<script>
+const D = {
+ "meta": {
+  "totalShip": 167733,
+  "dateFrom": "01-06-2026",
+  "dateTo": "29-06-2026",
+  "snapshot": "30-06-2026"
+ },
+ "late": {
+  "recv": 119101,
+  "late": 49434,
+  "lateRate": 41.5,
+  "canceled": 44470,
+  "cancelRate": 26.5,
+  "gmvLate": 15331599200,
+  "carriers": [
+   {
+    "carrier": "Giao Hang Nhanh",
+    "recv": 52619,
+    "late": 20307,
+    "rate": 38.6
+   },
+   {
+    "carrier": "Shopee Express",
+    "recv": 37180,
+    "late": 9850,
+    "rate": 26.5
+   },
+   {
+    "carrier": "Giao Hang Tiet Kiem",
+    "recv": 29201,
+    "late": 19257,
+    "rate": 65.9
+   },
+   {
+    "carrier": "Hasaki Now",
+    "recv": 101,
+    "late": 20,
+    "rate": 19.8
+   }
+  ],
+  "top10": [
+   {
+    "store": "SHOP - 170 QUOC LO 1A",
+    "total": 27122,
+    "canceled": 11994,
+    "recv": 14308,
+    "late": 6678,
+    "rate": 46.7,
+    "avgDays": 2.43,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 2940,
+      "late": 2380,
+      "rate": 81
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 5575,
+      "late": 2276,
+      "rate": 40.8
+     },
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 5793,
+      "late": 2022,
+      "rate": 34.9
+     }
+    ],
+    "lag": {
+     "1": 3101,
+     "2": 1419,
+     "3": 668,
+     "4+": 1490
+    }
+   },
+   {
+    "store": "SHOP - 477 LE VAN THO",
+    "total": 1807,
+    "canceled": 710,
+    "recv": 1074,
+    "late": 744,
+    "rate": 69.3,
+    "avgDays": 1.68,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 447,
+      "late": 403,
+      "rate": 90.2
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 409,
+      "late": 171,
+      "rate": 41.8
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 217,
+      "late": 170,
+      "rate": 78.3
+     },
+     {
+      "carrier": "Hasaki Now",
+      "recv": 1,
+      "late": 0,
+      "rate": 0
+     }
+    ],
+    "lag": {
+     "1": 530,
+     "2": 92,
+     "3": 57,
+     "4+": 65
+    }
+   },
+   {
+    "store": "SHOP - DUONG D6-5A",
+    "total": 1444,
+    "canceled": 268,
+    "recv": 1145,
+    "late": 615,
+    "rate": 53.7,
+    "avgDays": 1.41,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 892,
+      "late": 377,
+      "rate": 42.3
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 253,
+      "late": 238,
+      "rate": 94.1
+     }
+    ],
+    "lag": {
+     "1": 448,
+     "2": 111,
+     "3": 39,
+     "4+": 17
+    }
+   },
+   {
+    "store": "SHOP - 517 PHU LOI",
+    "total": 1986,
+    "canceled": 473,
+    "recv": 1455,
+    "late": 614,
+    "rate": 42.2,
+    "avgDays": 1.68,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 549,
+      "late": 288,
+      "rate": 52.5
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 322,
+      "late": 216,
+      "rate": 67.1
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 584,
+      "late": 110,
+      "rate": 18.8
+     }
+    ],
+    "lag": {
+     "1": 410,
+     "2": 109,
+     "3": 44,
+     "4+": 51
+    }
+   },
+   {
+    "store": "SHOP - 113 LE LOI",
+    "total": 1146,
+    "canceled": 108,
+    "recv": 1029,
+    "late": 590,
+    "rate": 57.3,
+    "avgDays": 2.04,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 659,
+      "late": 482,
+      "rate": 73.1
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 370,
+      "late": 108,
+      "rate": 29.2
+     }
+    ],
+    "lag": {
+     "1": 292,
+     "2": 156,
+     "3": 73,
+     "4+": 69
+    }
+   },
+   {
+    "store": "SHOP - 34 DT 746",
+    "total": 1714,
+    "canceled": 326,
+    "recv": 1342,
+    "late": 545,
+    "rate": 40.6,
+    "avgDays": 1.7,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 541,
+      "late": 240,
+      "rate": 44.4
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 275,
+      "late": 232,
+      "rate": 84.4
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 526,
+      "late": 73,
+      "rate": 13.9
+     }
+    ],
+    "lag": {
+     "1": 371,
+     "2": 100,
+     "3": 37,
+     "4+": 37
+    }
+   },
+   {
+    "store": "SHOP - 295 GIAI PHONG",
+    "total": 2040,
+    "canceled": 641,
+    "recv": 1313,
+    "late": 515,
+    "rate": 39.2,
+    "avgDays": 1.43,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 1050,
+      "late": 305,
+      "rate": 29
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 263,
+      "late": 210,
+      "rate": 79.8
+     }
+    ],
+    "lag": {
+     "1": 378,
+     "2": 90,
+     "3": 28,
+     "4+": 19
+    }
+   },
+   {
+    "store": "SHOP - 1207 NGUYEN DUY TRINH",
+    "total": 1140,
+    "canceled": 251,
+    "recv": 864,
+    "late": 491,
+    "rate": 56.8,
+    "avgDays": 1.54,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 668,
+      "late": 355,
+      "rate": 53.1
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 196,
+      "late": 136,
+      "rate": 69.4
+     }
+    ],
+    "lag": {
+     "1": 321,
+     "2": 109,
+     "3": 44,
+     "4+": 17
+    }
+   },
+   {
+    "store": "SHOP - 160 30 THANG 4",
+    "total": 874,
+    "canceled": 142,
+    "recv": 691,
+    "late": 477,
+    "rate": 69,
+    "avgDays": 1.67,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 480,
+      "late": 314,
+      "rate": 65.4
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 211,
+      "late": 163,
+      "rate": 77.3
+     }
+    ],
+    "lag": {
+     "1": 284,
+     "2": 116,
+     "3": 49,
+     "4+": 28
+    }
+   },
+   {
+    "store": "SHOP - 113 LUONG KHANH THIEN",
+    "total": 1329,
+    "canceled": 262,
+    "recv": 1014,
+    "late": 475,
+    "rate": 46.8,
+    "avgDays": 2.04,
+    "carriers": [
+     {
+      "carrier": "Giao Hang Nhanh",
+      "recv": 392,
+      "late": 291,
+      "rate": 74.2
+     },
+     {
+      "carrier": "Giao Hang Tiet Kiem",
+      "recv": 214,
+      "late": 101,
+      "rate": 47.2
+     },
+     {
+      "carrier": "Shopee Express",
+      "recv": 408,
+      "late": 83,
+      "rate": 20.3
+     }
+    ],
+    "lag": {
+     "1": 220,
+     "2": 146,
+     "3": 54,
+     "4+": 55
+    }
+   }
+  ]
+ },
+ "stuck": {
+  "total": 489,
+  "longStuck": 71,
+  "buckets": {
+   "≤3": 327,
+   "4-7": 91,
+   "8-14": 31,
+   "15-29": 40
+  },
+  "statusList": [
+   {
+    "status": "packed",
+    "n": 246,
+    "avg": 3.2,
+    "med": 2,
+    "max": 24
+   },
+   {
+    "status": "processing",
+    "n": 199,
+    "avg": 6.8,
+    "med": 4,
+    "max": 26
+   },
+   {
+    "status": "picking",
+    "n": 36,
+    "avg": 3.1,
+    "med": 2,
+    "max": 15
+   },
+   {
+    "status": "pending",
+    "n": 7,
+    "avg": 9.7,
+    "med": 4,
+    "max": 24
+   },
+   {
+    "status": "packing",
+    "n": 1,
+    "avg": 2,
+    "med": 2,
+    "max": 2
+   }
+  ],
+  "causes": [
+   {
+    "k": "processing / Chờ hủy đơn",
+    "v": 45
+   },
+   {
+    "k": "packed / Không",
+    "v": 12
+   },
+   {
+    "k": "processing / Không",
+    "v": 9
+   },
+   {
+    "k": "pending / Không",
+    "v": 2
+   },
+   {
+    "k": "processing / Chờ chuyển hàng",
+    "v": 2
+   },
+   {
+    "k": "picking / Không",
+    "v": 1
+   }
+  ],
+  "topShops": [
+   {
+    "store": "SHOP - 170 QUOC LO 1A",
+    "n": 128,
+    "old": 18
+   },
+   {
+    "store": "SHOP - 554 LE HONG PHONG",
+    "n": 38,
+    "old": 1
+   },
+   {
+    "store": "SHOP - 459 NGUYEN DANG",
+    "n": 22,
+    "old": 1
+   },
+   {
+    "store": "SHOP - 212 LE LOI",
+    "n": 21,
+    "old": 0
+   },
+   {
+    "store": "SHOP - 219 KHAM THIEN",
+    "n": 12,
+    "old": 1
+   },
+   {
+    "store": "SHOP - 362 DONG KHOI",
+    "n": 12,
+    "old": 0
+   },
+   {
+    "store": "SHOP - 240 TINH LO 825",
+    "n": 12,
+    "old": 1
+   },
+   {
+    "store": "SHOP - 477 LE VAN THO",
+    "n": 11,
+    "old": 1
+   }
+  ],
+  "carriers": [
+   {
+    "carrier": "Giao Hang Nhanh",
+    "n": 177
+   },
+   {
+    "carrier": "Shopee Express",
+    "n": 159
+   },
+   {
+    "carrier": "Giao Hang Tiet Kiem",
+    "n": 153
+   }
+  ]
+ }
+};
+const CC={"Giao Hang Nhanh":"var(--ghn)","Shopee Express":"var(--shopee)","Giao Hang Tiet Kiem":"var(--ghtk)","Hasaki Now":"var(--hnow)","Hasaki Pickup":"#6b7a73"};
+const fmt=n=>n.toLocaleString("vi-VN");
+const sevColor=r=>r>=60?"var(--crit)":r>=35?"var(--warn)":"var(--good)";
+const sevClass=r=>r>=60?"crit":r>=35?"warn":"ok";
+const shortCar=c=>c.replace("Giao Hang ","").replace("Tiet Kiem","GHTK").replace("Nhanh","GHN");
+
+// KPIs
+document.getElementById("k-late").textContent=String(D.late.lateRate).replace(".",",")+"%";
+document.getElementById("k-late-n").textContent=fmt(D.late.late)+" / "+fmt(D.late.recv)+" đơn đã giao";
+document.getElementById("k-cancel").textContent=String(D.late.cancelRate).replace(".",",")+"%";
+document.getElementById("k-cancel-n").textContent=fmt(D.late.canceled)+" shipment hủy";
+document.getElementById("k-gmv").textContent=(D.late.gmvLate/1e9).toFixed(1).replace(".",",")+" tỷ";
+document.getElementById("k-stuck").textContent=fmt(D.stuck.total);
+document.getElementById("k-stuck-n").textContent=fmt(D.stuck.longStuck)+" đơn treo ≥8 ngày";
+document.getElementById("k-total").textContent=fmt(D.meta.totalShip);
+
+// carrier bars
+const cb=document.getElementById("carrierBars");
+const maxRate=Math.max(...D.late.carriers.map(c=>c.rate));
+D.late.carriers.filter(c=>c.recv>50).forEach(c=>{
+  const w=(c.rate/Math.max(maxRate,1))*100;
+  const el=document.createElement("div");el.className="crow";
+  el.innerHTML='<div class="cname">'+c.carrier+'<small>'+fmt(c.recv)+' đơn giao</small></div>'+
+    '<div class="track"><div class="fill" style="width:'+w+'%;background:'+sevColor(c.rate)+'">'+String(c.rate).replace(".",",")+'%</div></div>'+
+    '<div class="cstat"><b>'+fmt(c.late)+'</b> đơn trễ</div>';
+  cb.appendChild(el);
+});
+
+// shop cards
+const sc=document.getElementById("shopCards");
+D.late.top10.forEach((s,i)=>{
+  const sev=sevClass(s.rate);
+  const carriers=s.carriers.filter(c=>c.recv>0).slice(0,4);
+  const maxC=Math.max(...carriers.map(c=>c.late),1);
+  const worst=carriers.slice().sort((a,b)=>b.rate-a.rate).find(c=>c.recv>=30)||carriers[0];
+  const carrierBars=carriers.map(c=>{const w=(c.late/maxC)*100;return '<div class="cbar"><div class="cn">'+shortCar(c.carrier)+'</div><div class="ctrack"><div class="cf" style="width:'+Math.max(w,2)+'%;background:'+CC[c.carrier]+'"></div></div><div class="cv"><b>'+fmt(c.late)+'</b>/'+fmt(c.recv)+' · '+String(c.rate).replace(".",",")+'%</div></div>';}).join("");
+  const lk=["1","2","3","4+"],ll={"1":"1 ngày","2":"2 ngày","3":"3 ngày","4+":"≥4 ngày"};
+  const maxL=Math.max(...lk.map(k=>s.lag[k]||0),1);
+  const lagBars=lk.map(k=>{const v=s.lag[k]||0,h=(v/maxL)*100;return '<div class="bar"><span class="bn">'+fmt(v)+'</span><div class="b '+(k==="1"?"d1":"")+'" style="height:'+Math.max(h,3)+'%"></div><span class="bl">'+ll[k]+'</span></div>';}).join("");
+  const insightCrit=worst.rate>=70;
+  const insight='<div class="insight '+(insightCrit?"crit":"")+'"><span class="ic">▶</span><div>Thủ phạm chính: <b>'+shortCar(worst.carrier)+'</b> trễ <b>'+String(worst.rate).replace(".",",")+'%</b> ('+fmt(worst.late)+'/'+fmt(worst.recv)+'). Trễ TB '+String(s.avgDays).replace(".",",")+' ngày · '+fmt(s.canceled)+' đơn hủy.</div></div>';
+  const card=document.createElement("div");card.className="card sev-"+sev;
+  card.innerHTML='<div class="card-head"><div class="rank">'+(i+1)+'</div><div class="name"><h3>'+s.store+'</h3><div class="line">'+fmt(s.recv)+' đơn đã giao · '+fmt(s.total)+' shipment tổng</div></div><div class="pill"><div class="big '+sev+'">'+String(s.rate).replace(".",",")+'%</div><div class="cap">'+fmt(s.late)+' đơn trễ</div></div></div><div class="card-body"><div><p class="block-t">Đơn trễ theo ĐVVC</p>'+carrierBars+'</div><div><p class="block-t">Phân bố số ngày trễ</p><div class="lag">'+lagBars+'</div></div>'+insight+'</div>';
+  sc.appendChild(card);
+});
+
+// stuck section
+document.getElementById("st-total").textContent=fmt(D.stuck.total);
+document.getElementById("st-long").textContent=fmt(D.stuck.longStuck);
+const stb=document.querySelector("#statusTable tbody");
+D.stuck.statusList.forEach(s=>{const tr=document.createElement("tr");const danger=s.max>=15;tr.innerHTML='<td><span class="tag-st">'+s.status+'</span></td><td class="r"><b>'+fmt(s.n)+'</b></td><td class="r">'+String(s.avg).replace(".",",")+'</td><td class="r">'+s.med+'</td><td class="r" style="'+(danger?"color:var(--crit);font-weight:700":"")+'">'+s.max+'</td>';stb.appendChild(tr);});
+
+const ab=document.getElementById("ageBars");
+const bk=[["≤3","≤3 ngày","var(--good)"],["4-7","4–7 ngày","var(--good)"],["8-14","8–14 ngày","var(--warn)"],["15-29","15–29 ngày","var(--crit)"]];
+const maxB=Math.max(...Object.values(D.stuck.buckets),1);
+bk.forEach(([key,lab,col])=>{const v=D.stuck.buckets[key]||0;const w=(v/maxB)*100;const pct=(v/D.stuck.total*100).toFixed(1).replace(".",",");const row=document.createElement("div");row.className="agerow";row.innerHTML='<div>'+lab+'</div><div class="agetrack"><div class="agefill" style="width:'+Math.max(w,2)+'%;background:'+col+'"></div></div><div style="text-align:right"><b>'+fmt(v)+'</b> <small style="color:var(--muted)">('+pct+'%)</small></div>';ab.appendChild(row);});
+
+const cl=document.getElementById("causeList");
+const parseCause=k=>{const[st,ly]=k.split(" / ");return{st,ly};};
+D.stuck.causes.forEach(c=>{const{st,ly}=parseCause(c.k);const div=document.createElement("div");div.className="cause";div.innerHTML='<div class="cnum">'+c.v+'</div><div class="cdesc"><span class="st">'+st+'</span> · <small>'+ly+'</small></div>';cl.appendChild(div);});
+
+const sst=document.querySelector("#stuckShopTable tbody");
+D.stuck.topShops.forEach((s,i)=>{const tr=document.createElement("tr");tr.innerHTML='<td>'+(i+1)+'</td><td>'+s.store+'</td><td class="r"><b>'+fmt(s.n)+'</b></td><td class="r" style="'+(s.old>0?"color:var(--crit)":"color:var(--muted)")+'">'+s.old+'</td>';sst.appendChild(tr);});
+</script>
+
+</body>
+</html>
