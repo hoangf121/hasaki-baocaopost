@@ -242,6 +242,25 @@
         <p style="font-size:12px;color:var(--muted);margin:12px 0 0">Số đơn treo chia đều giữa 3 ĐVVC → treo là vấn đề <b>khâu xử lý nội bộ tại shop/kho</b>, không phải do vận chuyển.</p>
       </div>
     </div>
+
+    <!-- PROCESSING (loại trừ Chờ hủy đơn) -->
+    <div class="panel" style="margin-top:16px" id="procPanel">
+      <div class="sec-head" style="margin-bottom:6px"><h2 style="font-size:17px">Soi riêng đơn <code style="background:#eef3f0;padding:1px 7px;border-radius:6px;font-size:14px">processing</code> — đã loại “Chờ hủy đơn”</h2></div>
+      <p class="lead" style="margin:4px 0 18px;max-width:78ch">Các đơn “Chờ hủy đơn” chỉ chờ duyệt hủy (xem mục trên). Sau khi loại nhóm đó, còn lại <b id="pr-total">—</b> đơn đang thật sự nằm trong dây chuyền xử lý nhưng chưa đi tiếp — đây mới là phần cần can thiệp vận hành.</p>
+      <div class="grid2">
+        <div>
+          <p class="block-t">Theo nguyên nhân treo</p>
+          <div id="prReason"></div>
+          <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0;line-height:1.6"><b>“Không gắn lý do”</b> nghĩa là hệ thống không ghi nhận lý do treo — phần lớn là đơn <b>chưa được xuất/đẩy đi</b>, một số là <b>hàng hoàn về kho bị kẹt</b> (<code>returned_sender</code>).</p>
+        </div>
+        <div>
+          <p class="block-t">Tuổi treo &amp; cửa hàng tập trung</p>
+          <div class="agebars" id="prAge"></div>
+          <p class="block-t" style="margin:18px 0 10px">Top cửa hàng</p>
+          <table id="prShop"><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- KHUYẾN NGHỊ -->
@@ -759,7 +778,78 @@ const D = {
     "carrier": "Giao Hang Tiet Kiem",
     "n": 153
    }
-  ]
+  ],
+  "processing": {
+   "total": 149,
+   "byReason": [
+    {
+     "k": "Chờ chuyển hàng",
+     "v": 86
+    },
+    {
+     "k": "Không",
+     "v": 62
+    },
+    {
+     "k": "Không trả lời",
+     "v": 1
+    }
+   ],
+   "byTtgh": [
+    {
+     "k": "(trống)",
+     "v": 140
+    },
+    {
+     "k": "returned_sender",
+     "v": 5
+    },
+    {
+     "k": "cancel",
+     "v": 2
+    },
+    {
+     "k": "received",
+     "v": 1
+    },
+    {
+     "k": "created",
+     "v": 1
+    }
+   ],
+   "byAge": {
+    "≤3": 94,
+    "4-7": 44,
+    "8-14": 7,
+    "15-29": 4
+   },
+   "topShops": [
+    {
+     "store": "SHOP - 170 QUOC LO 1A",
+     "n": 68
+    },
+    {
+     "store": "SHOP - 554 LE HONG PHONG",
+     "n": 8
+    },
+    {
+     "store": "SHOP - 219 KHAM THIEN",
+     "n": 7
+    },
+    {
+     "store": "SHOP - 1207 NGUYEN DUY TRINH",
+     "n": 5
+    },
+    {
+     "store": "SHOP - 141 CACH MANG THANG 8",
+     "n": 4
+    },
+    {
+     "store": "SHOP - 362 DONG KHOI",
+     "n": 4
+    }
+   ]
+  }
  }
 };
 const CC={"Giao Hang Nhanh":"var(--ghn)","Shopee Express":"var(--shopee)","Giao Hang Tiet Kiem":"var(--ghtk)","Hasaki Now":"var(--hnow)","Hasaki Pickup":"#6b7a73"};
@@ -825,6 +915,22 @@ D.stuck.causes.forEach(c=>{const{st,ly}=parseCause(c.k);const div=document.creat
 
 const sst=document.querySelector("#stuckShopTable tbody");
 D.stuck.topShops.forEach((s,i)=>{const tr=document.createElement("tr");tr.innerHTML='<td>'+(i+1)+'</td><td>'+s.store+'</td><td class="r"><b>'+fmt(s.n)+'</b></td><td class="r" style="'+(s.old>0?"color:var(--crit)":"color:var(--muted)")+'">'+s.old+'</td>';sst.appendChild(tr);});
+
+// processing (excl. Chờ hủy đơn)
+const P=D.stuck.processing;
+if(P){
+  document.getElementById("pr-total").textContent=fmt(P.total);
+  const RLAB={"Chờ chuyển hàng":["Chờ chuyển hàng","Chờ điều chuyển tồn kho giữa kho/shop","var(--warn)"],"Không":["Không gắn lý do","Chưa xuất đi / hoàn về kẹt","var(--crit)"],"Không trả lời":["Không trả lời","KH không phản hồi","var(--muted)"]};
+  const prMax=Math.max(...P.byReason.map(r=>r.v),1);
+  const pr=document.getElementById("prReason");
+  P.byReason.forEach(r=>{const m=RLAB[r.k]||[r.k,"","var(--muted)"];const w=(r.v/prMax)*100;const row=document.createElement("div");row.style.marginBottom="14px";row.innerHTML='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span style="font-weight:700">'+m[0]+'</span><span><b>'+fmt(r.v)+'</b> đơn</span></div><div class="ctrack" style="height:20px"><div class="cf" style="width:'+Math.max(w,3)+'%;background:'+m[2]+'"></div></div><div style="font-size:11.5px;color:var(--muted);margin-top:4px">'+m[1]+'</div>';pr.appendChild(row);});
+  const ageMap=[["≤3","≤3 ngày (bình thường)","var(--good)"],["4-7","4–7 ngày","var(--warn)"],["8-14","8–14 ngày","var(--crit)"],["15-29","15–29 ngày","var(--crit)"]];
+  const prAgeMax=Math.max(...Object.values(P.byAge),1);
+  const prAge=document.getElementById("prAge");
+  ageMap.forEach(([k,lab,col])=>{const v=P.byAge[k]||0;const w=(v/prAgeMax)*100;const row=document.createElement("div");row.className="agerow";row.innerHTML='<div>'+lab+'</div><div class="agetrack"><div class="agefill" style="width:'+Math.max(w,2)+'%;background:'+col+'"></div></div><div style="text-align:right"><b>'+fmt(v)+'</b></div>';prAge.appendChild(row);});
+  const prShop=document.querySelector("#prShop tbody");
+  P.topShops.forEach((s,i)=>{const tr=document.createElement("tr");const pct=(s.n/P.total*100).toFixed(0);tr.innerHTML='<td style="color:var(--muted);width:20px">'+(i+1)+'</td><td>'+s.store+'</td><td class="r"><b>'+fmt(s.n)+'</b> <small style="color:var(--muted)">('+pct+'%)</small></td>';prShop.appendChild(tr);});
+}
 </script>
 
 </body>
